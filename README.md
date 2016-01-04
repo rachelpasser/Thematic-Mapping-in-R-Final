@@ -12,5 +12,5 @@ The final function takes values from several different maps (created using the f
 
 The other folders contain maps I created with these functions, my source data, other output, my research paper, etc. Feel free to use this to get ideas! But also, please do not use my work word for word. I say this because while this is one way to make maps in R, there are so many other ways to do it. My ways may not be the best ways, as I have a social science background and not a programmer background.
 
-Thanks and I hope this helps! If you know wayas to improve my approach, please feel free to reach out.
+Thanks and I hope this helps! If you know ways to improve my approach, please feel free to reach out.
 -Rachel
