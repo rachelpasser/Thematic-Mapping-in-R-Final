@@ -1,0 +1,69 @@
+function(csv, shapefile_dsn, shp_name, indicator, join_col, merge_old_name, merge_name) 
+{
+    
+    ################# This is a function that will read in a csv, get quartile class break values from the indicator column,
+    ################# The function will return a prepared shapefile for mapping, as well as the class breaks needed to classify the indicator by quartiles.
+    ################# This function will first prep the csv data so that it can be joined to geographic data (a shapefile, specifically)
+    ################# by the ZCTA column. When the csv data with the indicator data is joined to the shapefile, it can then be mapped.
+    
+    #load the rgdal library, this library reads spatial data like shapefiles
+    library(rgdal)
+    
+    # read in csv
+    # no geographic component to this data yet.
+    
+    SES_table <- read.csv(csv, header = TRUE)
+    
+    # make sure indicator field is numeric.
+    
+    SES_table[, indicator] <- as.numeric(levels(SES_table[, indicator]))[SES_table[, indicator]]
+    
+    # Before joining this csv to a shapefile for mapping,
+    # we need to know the data distribution, so we know the class breaks to input to the mapping functions.
+    
+    # Get class breaks by creating vectors from quantile results.
+    # run quantile function on indicator field to get class breaks for the maps.
+    
+    breaks <- quantile(SES_table[, indicator], c(0, .25, .5, .75, 1), na.rm = FALSE, names = TRUE, type = 7)
+    
+    # Read in a shapefile, the geographic component
+    # This requires the dsn (the folder filepath the shapefile is in), and the name of the shapefile (do not type extensions like .shp, just the name)
+    # Only put in the shapefile name and not the extension because most shapefiles can be composed of 3-8 files.
+    
+    shapefile <- readOGR(shapefile_dsn, shp_name)
+    
+    # GIS data, namely a shapefile, cannot be used and viewed with the same common R commands.
+    # In order to access the data (or as GIS folks say, the "attribute table") associated with the shapefile, the data slot must
+    # be specified like "shapefile@data". If you just use the command "shapefile", it will be read as something to plot.
+    
+    # What fields between the table and the shapefile are you planning to join on?
+    # For this join approach, they must have a column in common. There are many ways to join data, but this one was most
+    # effective and only uses base R commands. The columns being joined on must have the same column name in both the shapefile and table.
+    
+    # also make sure the data type between these two fields is the same. one may be a character and one may be factor.
+    # Coerce table's join field to factor if it's not already, so it matches the shapefile's join field name, and data type
+    
+    SES_table[, join_col] <- as.factor(SES_table[, join_col])
+    
+    # Rename the table's column name so it matches the shapefile's column name
+    
+    names(SES_table) <- sub(merge_old_name, merge_name, names(SES_table))
+    
+    # Now we can join
+    #shapefile@data <- left_join(shapefile@data, SES_table) is another potential way to join, did not work for me (from the dplyr package).
+    
+    shapefile@data <- data.frame(as(shapefile, "data.frame"), SES_table[match(shapefile@data[, merge_name],SES_table[, merge_name]),])
+    
+    # make a new shapefile that is appropriately named to reflect the SES data merged in
+    
+    Output_shp <- shapefile
+    
+    
+    # pass the shapefile and class breaks out of the function
+    
+    map_data <- list(Output_shp, breaks)
+    #names(map_data) = c("Output Shapefile", "Class Breaks")
+    
+    map_data
+    
+}

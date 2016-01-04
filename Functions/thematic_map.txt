@@ -1,0 +1,55 @@
+function (function1_info, indicator, color_scheme, classes, classification, legend_title, map_title){
+    
+    # This function will take a shapefile (.shp, a file format composed of up to six files) from the shp_prep function
+    # and pass it into the tmap commands, resulting in a map plot.
+    
+    # The map plot will classify the data in quartiles, but the quartiles are based on the
+    # results from the other DataPrep function.
+    
+    # load the R libraries needed
+    
+    library(rgdal) #reads spatial data
+    library(tmap) # thematic mapping functions
+    library(RColorBrewer) # Cynthia Brewer's color schemes for use in R, based on her website colorbrewer2.org
+    
+    
+    # get data from the shp_prep function into this function
+    
+    data_prep <- function1_info
+    
+    # the shapefile was first in the list of output from the data prep function, pull it and make a new object
+    
+    shapefile <- data_prep[[1]]
+    
+    # get class breaks, which was the second output object output from the daa prep function
+    
+    class_breaks <- data_prep[[2]]
+    
+    # now we have the data prep object we need, the thematic mapping can begin!
+    
+    # note on thematic mapping in R:    
+    # If you want to quickly generate a map, the command 'qtm' (quick thematic map) will
+    # plot a very basic map with minimal arguments. If you want to have more
+    # control of the data classifications, line widths, color schemes and more, the best way
+    # is to use a combination of tmap commands strung together. For more information on this
+    # I highly recommend reading through Martijn Tennekes' documentation on the tmap package, here:
+    # https://cran.r-project.org/web/packages/tmap/tmap.pdf
+    
+    Map <- tm_shape(shapefile) + 
+        tm_polygons(indicator, palette = color_scheme, n = classes, style = classification, breaks = class_breaks, title = legend_title, cex = 0.9, legend.hist = TRUE, legend.hist.title = "Distribution", border.alpha = .5) + 
+        tm_layout(title = map_title, title.size = .96, inner.margins = c(0, 0.1, 0, 0), outer.margins = 0.01, draw.frame = FALSE, title.position = c("right", "top")) + 
+        tm_scale_bar()
+
+    # This results in a thematic map.
+    
+    # tm_shape specifies the shapefile to thematically map
+    # tm_polygons does the thematic map for polygons (which is what the ZCTAs are)
+    # tm_scale_bar makes a scale bar
+    # tm_layout adds other general map elements to the plot
+    # string them all together and you get a map layout
+        
+    # plot the map as output
+    
+    Map
+    
+}

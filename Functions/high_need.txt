@@ -1,0 +1,104 @@
+function(ind1, ind2, ind3, ind4) {
+    
+    ################# This is a function that passes in the output data from the four indicators, in order to
+    ################# calculate where all indicators are >= the 75th percentile, indicating areas of high need
+    ################# in several different socieconomic indicators. This may show areas of high need.
+    ################# However, this function should be generic enough that it could be easily modified to take results from several
+    ################# different types of data at varying values and output a value in a new field. However, a shapefile is a requirement
+    ################# to map anything.
+    
+    # this function requires the tmap library, which provides many thematic mapping functions
+    library(tmap)
+
+    
+    # Get the output from the first function for each indicator, that means the results from the four runs of the first function
+    # Assign them appropriately
+    
+    Indicator1 <- ind1
+    Indicator2 <- ind2
+    Indicator3 <- ind3
+    Indicator4 <- ind4
+    
+    # This function only needs one shapefile, but it needs the class breaks from all four indicators
+    # Extract the breaks output from each of the four indicator runs and make them objects in this function
+    
+    breaks1 <- ind1[[2]]
+    breaks2 <- ind2[[2]]
+    breaks3 <- ind3[[2]]
+    breaks4 <- ind4[[2]]
+    
+    # Extract the 75th percentile value as a new object for each of the for indicators
+
+    ind1_75th <- breaks1[[4]]
+    ind2_75th <- breaks2[[4]]
+    ind3_75th <- breaks3[[4]]
+    ind4_75th <- breaks4[[4]]
+    
+    # Pick one shapefile and make it an object in this function
+    
+    High_Need_shp <- Indicator3[[1]]
+    
+    # Check shapefile indicator fields and make sure they are all numeric and not factor
+    # Coerce to numeric
+    
+    High_Need_shp@data[, 5] <- as.numeric(levels(High_Need_shp@data[, 5]))[High_Need_shp@data[, 5]]
+    High_Need_shp@data[, 6] <- as.numeric(levels(High_Need_shp@data[, 6]))[High_Need_shp@data[, 6]]
+    
+    # Now take all rows in the table that are >= to the highest quartile in every indicator.
+    # so if highest quartile in all 4, it's high need
+    
+    High_Need_shp@data$HighNeed <- ((High_Need_shp@data[, 5] >= ind1_75th) & (High_Need_shp@data[, 6] >= ind2_75th) & (High_Need_shp@data[, 7] >= ind3_75th) & (High_Need_shp@data[, 8] >= ind4_75th))
+    
+    High_Need_Only_shp <- High_Need_shp[High_Need_shp@data$HighNeed == TRUE,]
+    
+    # The following section of code will use the tmap library to do thematic mapping.
+    
+    # input a shapefile, output a map
+    
+    # There are many ways to make a thematic map in R. The amount of commands gets longer
+    # the more you choose to customize what you see on the map.
+    # If you want to quickly generate a map, the command 'qtm' (quick thematic map) will
+    # throw up a very basic map with minimal customizations. If you want to have more
+    # control of the data classifications, line widths, color schemes and more, the best way
+    # is to use a combination of tmap commands strung together. For more information on this
+    # I highly recommend reading through Martijn Tennekes' documentation on tmap, here:
+    # https://cran.r-project.org/web/packages/tmap/tmap.pdf
+    
+    # This function will map the high need ZCTAs throughout South Carolina with a solid fill.
+    
+    Map <- tm_shape(High_Need_shp) + 
+        tm_polygons(col = "grey80", labels = c("High Need ZCTA", "Not High Need"), lwd = 1.5, border.col = "black", border.alpha = .5) + 
+        tm_layout(title="Fig. 5: High Need ZCTAs in South Carolina", title.size = .95, draw.frame = FALSE, title.position = c("right", "top")) + 
+        tm_scale_bar() + 
+        tm_shape(High_Need_Only_shp) + 
+        tm_fill("HighNeed", palette = "#330000", title = "Legend", labels = "High Need ZCTAs")
+    
+    # This results in a map with two layers; one of the whole state by ZCTA, but not themtically mapped, just specified to show up as grey.
+    # The second layer is a shapefile that only contains the ZCTAs where HighNeed = TRUE, shown in burgundy.
+    
+    # tm_shape specifies the shapefile to thematically map
+    # tm_polygons does the thematic map for polygons (which is what the ZCTAs are)
+    # tm_polygons is actually a combination of tm_borders and tm_fill
+    # tm_fill specifies what information is displayed in the fill of the polygons
+    # tm_scale_bar makes a scale bar
+    # tm_layout adds other general map elements to the plot
+    # string them all together and you get a map layout
+    
+    # Access the attribute table of the High Need shapefile for viewing purposes
+    
+    High_Need_table <- High_Need_Only_shp@data
+    
+    # Some summary statistics for the High Need ZCTAs
+    
+    High_Need_sum <- summary(High_Need_Only_shp@data)
+    
+    # The information about to be sent out of the function
+    
+    High_Need_Out <- list(Map, High_Need_table, High_Need_sum)
+    
+    # This function outputs a Map of High Need ZCTAs, the associated attribute table, and some summary statistics of the attribute table.
+    
+    High_Need_Out
+    
+    
+}
