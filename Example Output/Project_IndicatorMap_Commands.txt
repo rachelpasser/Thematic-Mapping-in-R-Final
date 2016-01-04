@@ -1,0 +1,65 @@
+Poverty Map Commands
+
+shp_prep call:
+
+> Poverty_Data <- shp_prep(csv = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project/SES_HighNeed_ZCTA.csv", shapefile_dsn = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", shp_name = "SC_ZCTAs_2010_2", indicator = 3, join_col = 1, merge_old_name = "ZCTA", merge_name = "ZCTA5CE10")
+OGR data source with driver: ESRI Shapefile 
+Source: "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", layer: "SC_ZCTAs_2010_2"
+with 424 features
+It has 2 fields
+Warning message:
+In shp_prep(csv = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project/SES_HighNeed_ZCTA.csv",  :
+  NAs introduced by coercion
+
+thematic_map call:
+
+> thematic_map(function1_info = Poverty_Data, indicator = "P_BelowPovLevel", color_scheme = "YlOrRd", classes = 5, classification = "fixed", legend_title = "% in Poverty by ZCTA", map_title = "Fig.1: Poverty by ZCTA in South Carolina")
+
+
+Unemployed Map Commands
+
+shp_prep call:
+
+> Unemployment_Data <- shp_prep(csv = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project/SES_HighNeed_ZCTA.csv", shapefile_dsn = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", shp_name = "SC_ZCTAs_2010_2", indicator = 4, join_col = 1, merge_old_name = "ZCTA", merge_name = "ZCTA5CE10")
+OGR data source with driver: ESRI Shapefile 
+Source: "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", layer: "SC_ZCTAs_2010_2"
+with 424 features
+It has 2 fields
+Warning message:
+In shp_prep(csv = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project/SES_HighNeed_ZCTA.csv",  :
+  NAs introduced by coercion
+
+thematic_map call:
+
+> thematic_map(function1_info = Unemployment_Data, indicator = "P_Unemployed", color_scheme = "YlOrRd", classes = 5, classification = "fixed", legend_title = "% Unemployed by ZCTA", map_title = "Fig.2: Unemployment by ZCTA in South Carolina")
+
+
+No High School Disploma Commands
+
+shp_prep call:
+
+> No_HS_Data <- shp_prep(csv = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project/SES_HighNeed_ZCTA.csv", shapefile_dsn = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", shp_name = "SC_ZCTAs_2010_2", indicator = 5, join_col = 1, merge_old_name = "ZCTA", merge_name = "ZCTA5CE10")
+OGR data source with driver: ESRI Shapefile 
+Source: "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", layer: "SC_ZCTAs_2010_2"
+with 424 features
+It has 2 fields
+
+thematic_map call:
+
+> thematic_map(function1_info = No_HS_Data, indicator = "P_less_than_HS_grad", color_scheme = "YlOrRd", classes = 5, classification = "fixed", legend_title = "% Without a HS Diploma by ZCTA", map_title = "Fig.3: No HS Diploma by ZCTA in South Carolina")
+
+
+Uninsured Commands
+
+shp_prep call:
+
+> Uninsured_Data <- shp_prep(csv = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project/SES_HighNeed_ZCTA.csv", shapefile_dsn = "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", shp_name = "SC_ZCTAs_2010_2", indicator = 6, join_col = 1, merge_old_name = "ZCTA", merge_name = "ZCTA5CE10")
+OGR data source with driver: ESRI Shapefile 
+Source: "C:/Users/Guillermo/Desktop/Rachel USC Courses/STAT 540/Grad Project", layer: "SC_ZCTAs_2010_2"
+with 424 features
+It has 2 fields
+
+thematic_map call:
+
+> thematic_map(function1_info = Uninsured_Data, indicator = "P_uninsured", color_scheme = "YlOrRd", classes = 5, classification = "fixed", legend_title = "% Uninsured by ZCTA", map_title = "Fig.4: Uninsured by ZCTA in South Carolina")
+

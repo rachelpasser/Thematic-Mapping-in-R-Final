@@ -1,0 +1,46 @@
+High Need Function Commands and tabular output:
+
+
+> high_need(ind1 = Poverty_Data, ind2 = Unemployment_Data, ind3 = No_HS_Data, ind4 = Uninsured_Data)
+[[1]]
+
+[[2]]
+    ZCTA5CE10             NAME ZCTA5CE10.1 Total_Pop P_BelowPovLevel P_Unemployed P_less_than_HS_grad P_uninsured HighNeed
+7       29843             Olar       29843      1735            28.2         16.4                25.4        23.8     TRUE
+11      29915 Daufuskie Island       29915       599            51.1         23.1                50.7        21.2     TRUE
+164     29580          Nesmith       29580      1455            27.2         19.5                21.4        24.4     TRUE
+223     29405 North Charleston       29405     24590            35.7         17.1                23.5        22.7     TRUE
+234     29114           Olanta       29114      2366            25.8         20.7                24.6        25.4     TRUE
+275     29827          Fairfax       29827      3326            36.2         20.8                23.9        25.4     TRUE
+280     29458   McClellanville       29458      2286            27.3         22.1                33.9        26.9     TRUE
+314     29145     Silverstreet       29145       664            25.9         28.4                32.8        27.8     TRUE
+324     29303      Spartanburg       29303     22311            32.5         18.5                29.9        25.9     TRUE
+333     29810        Allendale       29810      5093            39.7         27.0                21.0        23.2     TRUE
+340     29468        Pineville       29468      1856            35.0         24.8                28.9        24.0     TRUE
+358     29510          Andrews       29510     10970            34.6         16.6                22.0        31.6     TRUE
+377     29646        Greenwood       29646     27982            31.4         17.3                21.2        20.6     TRUE
+
+[[3]]
+   ZCTA5CE10               NAME    ZCTA5CE10.1   Total_Pop     P_BelowPovLevel  P_Unemployed   P_less_than_HS_grad
+ 29114  :1   Allendale       :1   29114  :1    Min.   :  599   Min.   :25.80   Min.   :16.40   Min.   :21.00      
+ 29145  :1   Andrews         :1   29145  :1    1st Qu.: 1735   1st Qu.:27.30   1st Qu.:17.30   1st Qu.:22.00      
+ 29303  :1   Daufuskie Island:1   29303  :1    Median : 2366   Median :32.50   Median :20.70   Median :24.60      
+ 29405  :1   Fairfax         :1   29405  :1    Mean   : 8095   Mean   :33.12   Mean   :20.95   Mean   :27.63      
+ 29458  :1   Greenwood       :1   29458  :1    3rd Qu.:10970   3rd Qu.:35.70   3rd Qu.:23.10   3rd Qu.:29.90      
+ 29468  :1   McClellanville  :1   29468  :1    Max.   :27982   Max.   :51.10   Max.   :28.40   Max.   :50.70      
+ (Other):7   (Other)         :7   (Other):7                                                                       
+  P_uninsured    HighNeed      
+ Min.   :20.60   Mode:logical  
+ 1st Qu.:23.20   TRUE:13       
+ Median :24.40   NA's:0        
+ Mean   :24.84                 
+ 3rd Qu.:25.90                 
+ Max.   :31.60                 
+                               
+
+Warning messages:
+1: In high_need(ind1 = Poverty_Data, ind2 = Unemployment_Data, ind3 = No_HS_Data,  :
+  NAs introduced by coercion
+2: In high_need(ind1 = Poverty_Data, ind2 = Unemployment_Data, ind3 = No_HS_Data,  :
+  NAs introduced by coercion
+> 
